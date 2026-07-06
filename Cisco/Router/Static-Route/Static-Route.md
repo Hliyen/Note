@@ -1,6 +1,6 @@
 # Static-Route #
 ## 簡介 ##
-static route 手動設定路由去向，適用於單一出口連接外部網路。
+‵‵‵ static route 手動設定路由去向，適用於單一出口連接外部網路。 ‵‵‵
 
 ### 指令 ###
 ip route [目的地IP] [目的地遮罩] [下一跳的IP]
