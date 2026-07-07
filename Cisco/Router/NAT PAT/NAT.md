@@ -9,7 +9,7 @@
         當內部網路有架設伺服器，就必須使用靜態 NAT。因為外網的使用者必須知道一個固定的公有 IP，才能準確連到該伺服器。
     #配置方式
         1. 建立一對一的固定對應關係
-          ip nat inside source static 10.1.1.100 203.0.113.100
+          ip nat inside source static [本機私有IP] [對應轉換的公有IP]
 
         2. 套用到介面上
           interface Ethernet0/1
