@@ -23,7 +23,6 @@
     如果池子裡只有 5 個公有 IP，那同時就只能有 5 台內網電腦上網，第 6 台會被擋下來。由於無法真正解決 IP 短缺問題，且成本高昂，目前在實際企業環境中已經極少單獨使用。
 #### 配置方式 ####
     A：綁定在「外部介面」的 IP（最常部署於家庭或小型辦公室，如動態取得的 IP）
-    
       1. 定義允許上網的內網範圍
         ip nat my_pool [POOL起始IP] [POOL結束IP] netmask [目的地遮罩]
       2. 直接轉換為外部介面 (Ethernet0/0) 的 IP，關鍵字在於最後必須加上 overload
@@ -35,18 +34,31 @@
         interface Ethernet0/0
           ip nat outside
           exit
-
     B：綁定在「特定的公有 IP 池」（常用於中大型企業，擁有多個固定公有 IP）
           ip nat my_pool [POOL起始IP] [POOL結束IP] natmask [目的地遮罩]
           access-list 1 permit [ACL要匹配的網路位置] [ACL專用的反向遮罩]
           ip nat inside source list 1 pool COMP_POOL overload
 ## PAT(Port Address Translation，多載 NAT) ##
     把大範圍的內網 IP，通通擠進同一個（或極少數個）外部 IP 裡，並用 Port 號碼來分流。
+### 指令 ###
+    ip access-list [型態] [名字]  或是  access-list [名字] permit [ACL要匹配的網路位置] [ACL專用的反向遮罩]
+#### 型態 ####
+    #Standard (標準型)
+        指令: ip access-list standard [名字]
+        檢查範圍: 僅檢查來源
+        封包攔截能力: 粗略（只能一刀切，整台電腦封鎖）
+        適用範圍: 適合單純的 NAT 轉換
+    #Extended (擴充型)
+        指令: ip access-list extended [名字]
+        檢查範圍: 同時檢查來源、目的地、協定、Port 號
+        封包攔截能力: 精準（可以做到「能用 LINE 聊天，但不能用網頁看影片」）
+        適用範圍: 適合複雜的防火牆安全過濾
 ### 綁定在「外部介面」的 PAT（最常見）
 #### 應用環境 ####
-   家庭 Wi-Fi 分享器、小型辦公室、或是企業對外使用非固定 IP（動態取得 IP）的環境。
+    家庭 Wi-Fi 分享器、小型辦公室、或是企業對外使用非固定 IP（動態取得 IP）的環境。
 #### 配置方式 ####
-    access-list 1 permit 10.1.1.0 0.0.0.255
+    access-list [型態] [名字] 
+    permit 10.1.1.0 0.0.0.255
     ip nat inside source list 1 int E0/0 overload
 ### 綁定在「特定公網 IP 池」的 PAT ###
 #### 應用環境 ####
@@ -54,5 +66,5 @@
     企業向電信商買了少數幾個合法的固定公網 IP，但內部有上千台設備要同時上網。因此需要先定義一個 IP 池，然後在最後加上 overload，讓這上千台設備去分攤這 3 個公有 IP。
 #### 配置方式 ####
     access-list 1 permit 10.1.1.0 0.0.0.255
-    ip nat pool COMP_POOL 203.0.113.50 203.0.113.52 netmask 255.255.255.248
+    ip nat pool COMP_POOL [POOL起始IP] [POOL結束IP] natmask [目的地遮罩]
     ip nat inside source list 1 pool COMP_POOL overload
