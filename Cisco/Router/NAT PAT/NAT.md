@@ -41,7 +41,9 @@
 ## PAT(Port Address Translation，多載 NAT) ##
     把大範圍的內網 IP，通通擠進同一個（或極少數個）外部 IP 裡，並用 Port 號碼來分流。
 ### 指令 ###
-    ip access-list [型態] [名字]  或是  access-list [名字] permit [ACL要匹配的網路位置] [ACL專用的反向遮罩]
+    ip access-list [型態] [名字]  
+    或是  
+    access-list [名字] permit [ACL要匹配的網路位置] [ACL專用的反向遮罩]
 #### 型態 ####
     #Standard (標準型)
         指令: ip access-list standard [名字]
