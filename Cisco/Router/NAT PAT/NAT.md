@@ -40,3 +40,19 @@
           ip nat my_pool [POOL起始IP] [POOL結束IP] natmask [目的地遮罩]
           access-list 1 permit [ACL要匹配的網路位置] [ACL專用的反向遮罩]
           ip nat inside source list 1 pool COMP_POOL overload
+## PAT(Port Address Translation，多載 NAT)
+    把大範圍的內網 IP，通通擠進同一個（或極少數個）外部 IP 裡，並用 Port 號碼來分流。
+### 綁定在「外部介面」的 PAT（最常見）###
+#### 應用環境 ####
+   家庭 Wi-Fi 分享器、小型辦公室、或是企業對外使用非固定 IP（動態取得 IP）的環境。
+#### 配置指令 ####
+    access-list 1 permit 10.1.1.0 0.0.0.255
+    ip nat inside source list 1 int E0/0 overload
+### 綁定在「特定公網 IP 池」的 PAT ###
+#### 應用環境 ####
+    中大型企業、學校、電算中心。
+    企業向電信商買了少數幾個合法的固定公網 IP，但內部有上千台設備要同時上網。因此需要先定義一個 IP 池，然後在最後加上 overload，讓這上千台設備去分攤這 3 個公有 IP。
+#### 配置環境 ####
+    access-list 1 permit 10.1.1.0 0.0.0.255
+    ip nat pool COMP_POOL 203.0.113.50 203.0.113.52 netmask 255.255.255.248
+    ip nat inside source list 1 pool COMP_POOL overload
