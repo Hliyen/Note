@@ -1,4 +1,4 @@
-  # NAT PAT #
+# NAT PAT #
 ## 簡介 ##
     NAT 一對一，PAT 多對一
 ## NAT(Network Address Translation，網路位址轉換) ##
@@ -40,7 +40,7 @@
           ip nat my_pool [POOL起始IP] [POOL結束IP] natmask [目的地遮罩]
           access-list 1 permit [ACL要匹配的網路位置] [ACL專用的反向遮罩]
           ip nat inside source list 1 pool COMP_POOL overload
-## PAT(Port Address Translation，多載 NAT)
+## PAT(Port Address Translation，多載 NAT) ##
     把大範圍的內網 IP，通通擠進同一個（或極少數個）外部 IP 裡，並用 Port 號碼來分流。
 ### 綁定在「外部介面」的 PAT（最常見）###
 #### 應用環境 ####
