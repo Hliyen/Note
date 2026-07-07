@@ -1,6 +1,26 @@
 # NAT PAT #
 ## 簡介 ##
 >NAT 一對一，PAT 多對一
+## 指令 ##
+    ip access-list [型態] [自定名稱]  
+    或是  
+    ip access-list [自定名稱] permit [ACL要匹配的網路位置] [ACL專用的反向遮罩]
+    int e0/1
+        ip nat inside
+    int e0/0
+        ip nat outside
+    ip nat inside sourse list [自定名稱] int e0/0 overload
+### 型態 ###
+    #Standard (標準型)
+        指令: ip access-list standard [名字]
+        檢查範圍: 僅檢查來源
+        封包攔截能力: 粗略（只能一刀切，整台電腦封鎖）
+        適用範圍: 適合單純的 NAT 轉換
+    #Extended (擴充型)
+        指令: ip access-list extended [名字]
+        檢查範圍: 同時檢查來源、目的地、協定、Port 號
+        封包攔截能力: 精準（可以做到「能用 LINE 聊天，但不能用網頁看影片」）
+        適用範圍: 適合複雜的防火牆安全過濾
 ## NAT(Network Address Translation，網路位址轉換) ##
 >一個私有 IP 在連出外網時，必須獨佔一個公有 IP，因此公司內部有 100 台電腦想同時上網，就必須購買 100 個公有 IP。
 
@@ -27,7 +47,7 @@
     A：綁定在「外部介面」的 IP（最常部署於家庭或小型辦公室，如動態取得的 IP）
       1. 定義允許上網的內網範圍
         ip nat my_pool [POOL起始IP] [POOL結束IP] netmask [目的地遮罩]
-      2. 直接轉換為外部介面 (Ethernet0/0) 的 IP，關鍵字在於最後必須加上 overload
+      2. 直接轉換為外部介面 (Ethernet0/0) 的 IP
         ip nat inside source list 1 int E0/0 overload
       3. 指定介面方向
         interface Ethernet0/1
@@ -42,21 +62,6 @@
           ip nat inside source list 1 pool COMP_POOL overload
 ## PAT(Port Address Translation，多載 NAT) ##
 >把大範圍的內網 IP，通通擠進同一個（或極少數個）外部 IP 裡，並用 Port 號碼來分流。
-### 指令 ###
-    ip access-list [型態] [名字]  
-    或是  
-    access-list [名字] permit [ACL要匹配的網路位置] [ACL專用的反向遮罩]
-#### 型態 ####
-    #Standard (標準型)
-        指令: ip access-list standard [名字]
-        檢查範圍: 僅檢查來源
-        封包攔截能力: 粗略（只能一刀切，整台電腦封鎖）
-        適用範圍: 適合單純的 NAT 轉換
-    #Extended (擴充型)
-        指令: ip access-list extended [名字]
-        檢查範圍: 同時檢查來源、目的地、協定、Port 號
-        封包攔截能力: 精準（可以做到「能用 LINE 聊天，但不能用網頁看影片」）
-        適用範圍: 適合複雜的防火牆安全過濾
 ### 綁定在「外部介面」的 PAT（最常見）
 #### 應用環境 ####
 >家庭 Wi-Fi 分享器、小型辦公室、或是企業對外使用非固定 IP（動態取得 IP）的環境。
