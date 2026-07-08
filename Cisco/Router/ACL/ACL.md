@@ -102,5 +102,5 @@
 ### 限制所有其他流量，並記錄入口介面、來源 MAC 位址、封包的來源和目的地 IP 位址以及連接埠 ###
     deny any any log-input
 ### 將 ACL 套用到實體接口上 ###
-    int vl 10
+    int e0/1.10
         ip access-group CORP_ACL in
