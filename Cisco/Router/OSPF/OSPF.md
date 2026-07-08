@@ -30,6 +30,8 @@
       exit
     int e0/1
       ip ospf priority 0
+      end
+    clear ip ospf process
 
     R2
     router ospf 1
@@ -42,6 +44,8 @@
       ip ospf priority 255
     int e0/2
       ip ospf priority 255
+      end
+    clear ip ospf process
 
     R3
     router ospf 1
@@ -51,3 +55,6 @@
       exit
     int e0/1
       ip ospf priority 0
+      end
+    clear ip ospf process
+      
