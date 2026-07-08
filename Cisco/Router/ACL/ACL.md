@@ -24,6 +24,8 @@
 ### 方向性 ###
 >ACL 必須應用在路由器的接口上，且要區分 Inbound（流量流進接口） 或 Outbound（流量流出接口）。
 ## 範例 1##
+![](Image/ACL1.png)
+
     在 Sw101 上配置並應用一個單一的 NACL，使用以下設定：
     ● 名稱：ENT_ACL
     ● 限制僅允許 VLAN 200 上的 PC2 對 PC1 進行 ping
