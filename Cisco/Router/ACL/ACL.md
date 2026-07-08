@@ -33,7 +33,7 @@
     ● 只允許 VLAN 200 上的 PC2 對 Sw101 進行 telnet
     ● 防止 VLAN 200 上的所有其他設備進行 telnet
     ● 允許 VLAN 200 上的所有其他網路流量
-### 建立d擴充ACL ###    
+### 建立擴充ACL ###    
     ip access-list [型態] [名稱]
     ip access-list extanded ENT_ACL
 ### 限制僅允許 VLAN 200 上的 PC2 對 PC1 進行 ping ###
@@ -47,12 +47,26 @@
     deny tcp 192.168.200.0 0.0.0.255 host any eq telnet 
 ### 允許 VLAN 200 上的所有其他網路流量 ###
     permit ip any any
-## 允許BOOTP和HTTPS ##
+### 將 ACL 套用到實體接口上 ###
+    int vl 200
+        ip access-group ENT_ACL in
+## 範例2 ##
+
+![](Image/ACL2.png)
+
+    在 Gw1 上設定並套用 NACL，以控制來自 VLAN 10 的網路流量：
+    ● 名稱： CORP_ACL
+    ● 允許 BOOTP 和 HTTPS
+    ● 限制所有其他流量，並記錄入口介面、來源 MAC 位址、封包的來源和目的地 IP 位址以及連接埠
+### 建立擴充ACL ###    
+    ip access-list [型態] [名稱]
+    ip access-list extanded CORP_ACL
+### 允許BOOTP和HTTPS ##
     permit udp any any eq bootps  #BOOTP 伺服器端流量：bootps (或寫 67)
     permit udp any any eq bootpc  #BOOTP 客戶端流量：bootpc (或寫 68)
     permit tcp any any eq 443  #HTTPS 門牌號：443
-## 限制所有其他流量，並記錄入口介面、來源 MAC 位址、封包的來源和目的地 IP 位址以及連接埠 ##
+### 限制所有其他流量，並記錄入口介面、來源 MAC 位址、封包的來源和目的地 IP 位址以及連接埠 ###
     deny any any log-input
-## 套用到Vlan 路口 ##
-    int vl [自定數字]
-        ip access-group [自定名稱] in
+### 將 ACL 套用到實體接口上 ###
+    int vl 10
+        ip access-group CORP_ACL in
