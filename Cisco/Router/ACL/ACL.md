@@ -71,14 +71,14 @@
     ip access-list [型態] [名稱]
     ip access-list extanded ENT_ACL
 ### 限制僅允許 VLAN 200 上的 PC2 對 PC1 進行 ping ###
-    permit icmp host [來源] host [目的地]
-    permit icmp host 192.168.200.10 host 192.168.100.10
+    deny icmp [host 來源] [host 目的地]
+    deny icmp host 192.168.200.10 host 192.168.100.10
 ### 只允許 VLAN 200 上的 PC2 對 Sw101 進行 telnet ###
-    permit tcp host [來源] host [目的地] eq telnet
-    permit tcp host 192.168.200.10 host 192.168.100.1 eq telnet
+    permit tcp [host 來源] [host 目的地] eq telnet
+    permit tcp host 192.168.200.10 any eq telnet
 ### 防止 VLAN 200 上的所有其他設備進行 telnet ###
-    deny tcp [整個VLAN 200 網段] host [目的地] eq telnet
-    deny tcp 192.168.200.0 0.0.0.255 host any eq telnet 
+    deny tcp [整個VLAN 200 網段] [host 目的地] eq telnet
+    deny tcp 192.168.200.0 0.0.0.255 any eq telnet 
 ### 允許 VLAN 200 上的所有其他網路流量 ###
     permit ip any any
 ### 將 ACL 套用到實體接口上 ###
