@@ -18,6 +18,6 @@
     sw mo acc  #只能套用在 access 或 trunk
     sw port-sec #啟動 Port Security
     sw port-sec maximum 1  #限制最大允許的 MAC 數量為 1
-    sw port-sec mac-address sricky  #讓交換器動態學習第一個 MAC 並寫入運行設定
+    sw port-sec mac-address sticky  #讓交換器動態學習第一個 MAC 並寫入運行設定
     sw port-sec violation shutdown  #設定違反規則時的懲罰方式為 Shutdown
     
