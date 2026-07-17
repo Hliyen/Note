@@ -13,7 +13,7 @@
         ip nat inside
     int e0/0
         ip nat outside
-    ip nat inside sourse list [自定名稱] int e0/0 overload
+    ip nat inside source list [自定名稱] int e0/0 overload
 ### 型態 ###
     #Standard (標準型)
         指令: ip access-list standard [名字]
