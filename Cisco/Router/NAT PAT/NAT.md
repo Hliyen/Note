@@ -3,8 +3,12 @@
 >NAT 一對一，PAT 多對一
 ## 指令 ##
     ip access-list [型態] [自定名稱]  
+    permit [內網網段] [內網網段的反向遮罩]
+    ip access-list standard NAT
+    permit 10.1.10.0
     或是  
-    ip access-list [自定名稱] permit [ACL要匹配的網路位置] [ACL專用的反向遮罩]
+    ip access-list [自定名稱] permit [內網IP] [內網的反向遮罩]
+    ip access-list 1 permit 10.1.10.0 0.0.0.255
     int e0/1
         ip nat inside
     int e0/0
